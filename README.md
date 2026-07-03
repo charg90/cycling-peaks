@@ -2,6 +2,8 @@
 
 Tu propio TrainingPeaks personal. 100% local, con tus datos reales de Garmin Connect.
 
+**Status:** Backend corriendo ✓ | Frontend Vercel ✓
+
 ## Stack
 
 - Backend: Go + Fiber (API REST)
