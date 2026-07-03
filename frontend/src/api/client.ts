@@ -1,4 +1,6 @@
-const BASE = '/api/v1'
+const BASE = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api/v1`
+  : '/api/v1'
 
 interface Athlete {
   id: string
