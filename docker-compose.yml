@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  api:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=/data/cycling.db
+      - PORT=8080
+      - SYNC_INTERVAL_MINUTES=60
+      - GARMIN_EMAIL=${GARMIN_EMAIL}
+      - GARMIN_PASSWORD=${GARMIN_PASSWORD}
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  sync:
+    build: ./sync
+    environment:
+      - DATABASE_URL=cycling.db
+      - GARMIN_EMAIL=${GARMIN_EMAIL}
+      - GARMIN_PASSWORD=${GARMIN_PASSWORD}
+    volumes:
+      - ./data:/data
+    depends_on:
+      - api
+    restart: unless-stopped
