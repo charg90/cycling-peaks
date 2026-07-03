@@ -1,14 +1,5 @@
-import React from 'react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts'
-
-interface DailyLoad {
-  date: string
-  ctl: number
-  atl: number
-  tsb: number
-  tss: number
-  training_status: string
-}
+import type { DailyLoad } from '../types/load'
 
 interface LoadChartProps {
   data: DailyLoad[]

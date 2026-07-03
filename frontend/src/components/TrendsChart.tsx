@@ -1,16 +1,5 @@
-import React, { useState } from 'react'
-
-interface DailyLoad {
-  date: string
-  ctl: number
-  atl: number
-  tsb: number
-  tss: number
-}
-
-interface TrendsChartProps {
-  data: DailyLoad[]
-}
+import { useState } from 'react'
+import type { DailyLoad } from '../types/load'
 
 type Period = '3M' | '6M' | '12M'
 
@@ -21,6 +10,13 @@ function filterData(data: DailyLoad[], period: Period): DailyLoad[] {
   cutoff.setMonth(now.getMonth() - months)
   const cutoffStr = cutoff.toISOString().split('T')[0]
   return data.filter(d => d.date >= cutoffStr)
+}
+
+export { filterData }
+export type { Period }
+
+interface TrendsChartProps {
+  data: DailyLoad[]
 }
 
 export default function TrendsChart({ data }: TrendsChartProps) {
@@ -66,7 +62,7 @@ export default function TrendsChart({ data }: TrendsChartProps) {
   const labelStep = Math.max(1, Math.floor(sorted.length / labelCount))
   const xLabels = sorted
     .filter((_, i) => i % labelStep === 0 || i === sorted.length - 1)
-    .map((d, _, arr) => {
+    .map((d) => {
       const idx = sorted.indexOf(d)
       return { x: x(idx), label: new Date(d.date + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) }
     })
@@ -78,7 +74,6 @@ export default function TrendsChart({ data }: TrendsChartProps) {
     yGridlines.push(v)
   }
 
-  const today = new Date().toISOString().split('T')[0]
   const last = sorted[sorted.length - 1]
   const prevCtl = sorted.length > 30 ? sorted[sorted.length - 30].ctl : null
 

@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { api } from '../api/client'
-
-interface Athlete {
-  id: string
-  name: string
-  ftp: number
-}
+import type { Athlete } from '../types/load'
 
 interface SettingsProps {
   athlete: Athlete

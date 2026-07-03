@@ -1,23 +1,6 @@
-import React, { useState } from 'react'
-
-interface Workout {
-  id: string
-  title: string
-  sport_type: string
-  start_time: string
-  duration_secs: number
-  distance_meters: number
-  elevation_gain_meters: number
-  normalized_power: number
-  avg_power: number
-  max_power: number
-  intensity_factor: number
-  tss: number
-  avg_hr: number
-  max_hr: number
-  time_in_zones_json: string
-  garmin_connect_url: string
-}
+import { useState } from 'react'
+import { formatDate, formatDuration } from '../utils/format'
+import type { Workout } from '../types/load'
 
 interface WorkoutListProps {
   workouts: Workout[]
@@ -25,18 +8,6 @@ interface WorkoutListProps {
 }
 
 type FilterPeriod = 'all' | '7d' | '30d' | '90d'
-
-function formatDuration(secs: number): string {
-  const h = Math.floor(secs / 3600)
-  const m = Math.floor((secs % 3600) / 60)
-  if (h > 0) return `${h}h ${m}m`
-  return `${m}m`
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr)
-  return d.toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric' })
-}
 
 export default function WorkoutList({ workouts, loading }: WorkoutListProps) {
   const [expanded, setExpanded] = useState<string | null>(null)
@@ -215,6 +186,5 @@ export default function WorkoutList({ workouts, loading }: WorkoutListProps) {
           )
         })}
       </div>
-    </div>
   )
 }

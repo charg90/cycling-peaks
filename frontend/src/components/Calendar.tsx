@@ -1,14 +1,6 @@
-import React, { useState } from 'react'
-
-interface Workout {
-  id: string
-  title: string
-  start_time: string
-  tss: number
-  duration_secs: number
-  normalized_power: number
-  avg_power: number
-}
+import { useState } from 'react'
+import { getMonthDays } from '../utils/calendar'
+import type { Workout } from '../types/load'
 
 interface CalendarProps {
   workouts: Workout[]
@@ -16,22 +8,6 @@ interface CalendarProps {
 
 const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 const DAYS_ES = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom']
-
-function getMonthDays(year: number, month: number) {
-  const firstDay = new Date(year, month, 1)
-  const lastDay = new Date(year, month + 1, 0)
-  const daysInMonth = lastDay.getDate()
-  // Monday=0 ... Sunday=6
-  let startWeekday = (firstDay.getDay() + 6) % 7
-  return { daysInMonth, startWeekday }
-}
-
-function tssColor(tss: number): string {
-  if (tss === 0) return 'transparent'
-  if (tss < 50) return 'var(--primary)'
-  if (tss < 100) return 'var(--primary)'
-  return 'var(--primary)'
-}
 
 export default function Calendar({ workouts }: CalendarProps) {
   const now = new Date()
@@ -70,8 +46,10 @@ export default function Calendar({ workouts }: CalendarProps) {
   for (let i = 0; i < startWeekday; i++) cells.push(null)
   for (let d = 1; d <= daysInMonth; d++) cells.push(d)
 
-  const isToday = (day: number) =>
-    day === now.getDate() && year === now.getFullYear() && month === now.getMonth()
+  const isToday = (day: number | null): boolean => {
+    if (day === null) return false
+    return day === now.getDate() && year === now.getFullYear() && month === now.getMonth()
+  }
 
   return (
     <div className="card">
@@ -112,7 +90,7 @@ export default function Calendar({ workouts }: CalendarProps) {
       {/* Calendar grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
         {cells.map((day, idx) => {
-          const dayWorkouts = day ? workoutMap[day] : []
+          const dayWorkouts = (day && workoutMap[day]) || []
           const totalTSS = dayWorkouts.reduce((s, w) => s + w.tss, 0)
           const hasWorkout = dayWorkouts.length > 0
           return (

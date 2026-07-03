@@ -1,18 +1,5 @@
 import React, { useState } from 'react'
-
-interface FTPHistoryItem {
-  date: string
-  ftp: number
-  ftp_model: number
-  ftp_from_tss: number
-  method: string
-  np: number
-  avg_p: number
-  best_30s: number
-  best_5min: number
-  best_20min: number
-  tss: number
-}
+import type { FTPHistoryItem } from '../types/load'
 
 const METHOD_LABELS: Record<string, string> = {
   'model+tss': 'Modelo CP + TSS',
@@ -97,7 +84,7 @@ export default function FTPTrend() {
           const step = Math.max(1, Math.floor(withPower.length / 6))
           return withPower
             .filter((_, i) => i % step === 0 || i === withPower.length - 1)
-            .map((d, _, arr) => {
+            .map((d) => {
               const i = withPower.indexOf(d)
               const label = new Date(d.date + 'T12:00:00').toLocaleDateString('es-ES', { month: 'short', year: '2-digit' })
               return <text key={i} x={x(i)} y={H - 6} textAnchor="middle" fontSize="9" fill="var(--text-3)">{label}</text>

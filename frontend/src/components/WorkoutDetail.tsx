@@ -1,4 +1,5 @@
-import React from 'react'
+import { formatDateLong, formatDurationDetailed } from '../utils/format'
+import type { Workout } from '../types/load'
 
 interface ZoneData {
   z1: number; z2: number; z3: number; z4: number;
@@ -6,23 +7,7 @@ interface ZoneData {
 }
 
 interface WorkoutDetailProps {
-  workout: {
-    id: string
-    title: string
-    start_time: string
-    duration_secs: number
-    distance_meters: number
-    elevation_gain_meters: number
-    normalized_power: number
-    avg_power: number
-    max_power: number
-    intensity_factor: number
-    tss: number
-    avg_hr: number
-    max_hr: number
-    time_in_zones_json: string
-    garmin_connect_url: string
-  }
+  workout: Workout
   ftp: number
   onClose: () => void
 }
@@ -35,22 +20,6 @@ const ZONE_NAMES: Record<string, string> = {
 const ZONE_COLORS: Record<string, string> = {
   z1: '#94a3b8', z2: '#3b82f6', z3: '#22c55e',
   z4: '#eab308', z5: '#f97316', z6: '#ef4444', z7: '#dc2626',
-}
-
-function formatDuration(secs: number): string {
-  const h = Math.floor(secs / 3600)
-  const m = Math.floor((secs % 3600) / 60)
-  const s = secs % 60
-  if (h > 0) return `${h}h ${m}m`
-  return `${m}m ${s}s`
-}
-
-function formatDate(iso: string): string {
-  try {
-    return new Date(iso).toLocaleDateString('es-AR', {
-      weekday: 'short', day: 'numeric', month: 'short', year: 'numeric',
-    })
-  } catch { return iso }
 }
 
 function ZoneBar({ zone, seconds, total, ftp }: { zone: string; seconds: number; total: number; ftp: number }) {
@@ -122,7 +91,7 @@ export default function WorkoutDetail({ workout, ftp, onClose }: WorkoutDetailPr
                 {workout.title}
               </h2>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-2)' }}>
-                {formatDate(workout.start_time)} · {formatDuration(workout.duration_secs)}
+                {formatDateLong(workout.start_time)} · {formatDurationDetailed(workout.duration_secs)}
               </div>
             </div>
             <button

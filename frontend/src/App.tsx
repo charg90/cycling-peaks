@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { api } from './api/client'
 import MetricCard from './components/MetricCard'
 import LoadChart from './components/LoadChart'
@@ -8,51 +8,8 @@ import TrendsChart from './components/TrendsChart'
 import ZoneBalance from './components/ZoneBalance'
 import FTPTrend from './components/FTPTrend'
 import Settings from './components/Settings'
+import type { Athlete, Summary, Workout, DailyLoad } from './types/load'
 import './styles/globals.css'
-
-interface Athlete {
-  id: string
-  name: string
-  ftp: number
-}
-
-interface Summary {
-  ctl: number
-  atl: number
-  tsb: number
-  status: string
-  this_week: { tss: number; workouts: number; hours: number }
-  this_month: { tss: number; workouts: number; hours: number }
-  last_workout?: { title: string; tss: number; date: string }
-}
-
-interface Workout {
-  id: string
-  title: string
-  sport_type: string
-  start_time: string
-  duration_secs: number
-  distance_meters: number
-  elevation_gain_meters: number
-  normalized_power: number
-  avg_power: number
-  max_power: number
-  intensity_factor: number
-  tss: number
-  avg_hr: number
-  max_hr: number
-  time_in_zones_json: string
-  garmin_connect_url: string
-}
-
-interface DailyLoad {
-  date: string
-  ctl: number
-  atl: number
-  tsb: number
-  tss: number
-  training_status: string
-}
 
 type Tab = 'dashboard' | 'calendar' | 'settings'
 
@@ -73,9 +30,9 @@ function App() {
   useEffect(() => {
     if (tab === 'dashboard' || tab === 'calendar') {
       Promise.all([
-        api.getSummary(),
-        api.getWorkouts(1),
-        api.getLoadHistory(365),
+        api.getSummary<Summary>(),
+        api.getWorkouts<{ data: Workout[] }>(1),
+        api.getLoadHistory<{ data: DailyLoad[] }>(365),
       ]).then(([summaryData, workoutsData, loadData]) => {
         setData(summaryData)
         setWorkouts(workoutsData.data || [])
