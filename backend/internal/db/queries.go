@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"math"
 	"sort"
-	"strconv"
 	"time"
 )
 
@@ -391,13 +390,13 @@ func GetFTPHistory(athleteID string, limit int) ([]map[string]interface{}, error
 
 			var estimatedFTP float64
 			var method string
-			if cpFromModel > 0 && ftpFromTSS > 0:
+			if cpFromModel > 0 && ftpFromTSS > 0 {
 				estimatedFTP = cpFromModel*0.7 + ftpFromTSS*0.3
 				method = "model+tss"
-			} else if cpFromModel > 0:
+			} else if cpFromModel > 0 {
 				estimatedFTP = cpFromModel
 				method = "power_duration_model"
-			} else if ftpFromTSS > 0:
+			} else if ftpFromTSS > 0 {
 				estimatedFTP = ftpFromTSS
 				method = "tss_formula"
 			} else {
@@ -407,9 +406,9 @@ func GetFTPHistory(athleteID string, limit int) ([]map[string]interface{}, error
 
 			result = append(result, map[string]interface{}{
 				"date":         dateStr,
-				"ftp":          int(round(estimatedFTP)),
-				"ftp_model":    int(round(cpFromModel)),
-				"ftp_from_tss": int(round(ftpFromTSS)),
+				"ftp":          int(math.Round(estimatedFTP)),
+				"ftp_model":    int(math.Round(cpFromModel)),
+				"ftp_from_tss": int(math.Round(ftpFromTSS)),
 				"method":       method,
 				"np":           np,
 				"avg_p":        avgP,

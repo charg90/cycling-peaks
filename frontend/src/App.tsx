@@ -38,7 +38,7 @@ function App() {
         setWorkouts(workoutsData.data || [])
         setLoadHistory(loadData.data || [])
         setLoading(false)
-      })
+      }).catch(() => setLoading(false))
     } else if (tab === 'settings' && !athlete) {
       api.getAthlete().then(setAthlete).catch(() => setAthlete({ id: 'charly', name: 'Charly', ftp: 220 }))
     }
