@@ -22,6 +22,8 @@ function App() {
   const [loadHistory, setLoadHistory] = useState<DailyLoad[]>([])
   const [loading, setLoading] = useState(true)
 
+  const [error, setError] = useState<string | null>(null)
+
   // Apply theme to document root
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -38,7 +40,11 @@ function App() {
         setWorkouts(workoutsData.data || [])
         setLoadHistory(loadData.data || [])
         setLoading(false)
-      }).catch(() => setLoading(false))
+      }).catch((err) => {
+        console.error('Dashboard load error:', err)
+        setError(err.message || 'Error cargando datos')
+        setLoading(false)
+      })
     } else if (tab === 'settings' && !athlete) {
       api.getAthlete().then(setAthlete).catch(() => setAthlete({ id: 'charly', name: 'Charly', ftp: 220 }))
     }
@@ -48,7 +54,8 @@ function App() {
     setAthlete(prev => prev ? { ...prev, ftp } : null)
   }
 
-  if (loading) return <div className="app"><div className="loading">Loading...</div></div>
+  if (loading) return <div style={{background:'#1a1a2e',minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontFamily:'system-ui',fontSize:'1.2rem'}}>Loading...</div>
+  if (error) return <div style={{background:'#1a1a2e',minHeight:'100vh',padding:'32px',color:'#fff',fontFamily:'system-ui'}}><div style={{border:'1px solid #e53e3e',borderRadius:'8px',padding:'24px',background:'rgba(229,62,62,0.15)',maxWidth:'600px',margin:'0 auto'}}><h2 style={{color:'#fc8181',margin:'0 0 12px 0'}}>Error de conexión</h2><p style={{color:'#feb2b2',margin:0}}>{error}</p></div></div>
 
   const statusColors: Record<string, string> = {
     optimal: 'status-optimal',
