@@ -143,73 +143,73 @@ export default function WorkoutList({ workouts, loading }: WorkoutListProps) {
               </div>
 
               {isOpen && (
-              <div style={{ marginTop: '12px', display: 'grid', gap: '12px', padding: '12px', background: 'var(--surface-1)', borderRadius: '8px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '12px' }}>
-                <div>
-                  <div style={{ color: 'var(--text-2)', fontSize: '0.7rem', marginBottom: '2px' }}>POTENCIA</div>
-                  <div style={{ fontWeight: 600 }}>{w.avg_power > 0 ? `${w.avg_power}W` : '—'}</div>
-                  {w.normalized_power > 0 && <div style={{ fontSize: '0.75rem', color: 'var(--text-2)' }}>NP {w.normalized_power}W</div>}
-                  {w.max_power > 0 && <div style={{ fontSize: '0.75rem', color: 'var(--text-2)' }}>MAX {w.max_power}W</div>}
-                </div>
-                <div>
-                  <div style={{ color: 'var(--text-2)', fontSize: '0.7rem', marginBottom: '2px' }}>FRECUENCIA CARDÍACA</div>
-                  <div style={{ fontWeight: 600 }}>{w.avg_hr > 0 ? `${w.avg_hr} bpm` : '—'}</div>
-                  {w.max_hr > 0 && <div style={{ fontSize: '0.75rem', color: 'var(--text-2)' }}>MAX {w.max_hr} bpm</div>}
-                </div>
-                <div>
-                  <div style={{ color: 'var(--text-2)', fontSize: '0.7rem', marginBottom: '2px' }}>INTENSIDAD</div>
-                  <div style={{ fontWeight: 600 }}>{w.intensity_factor > 0 ? `${(w.intensity_factor * 100).toFixed(0)}% IF` : '—'}</div>
-                </div>
-                <div>
-                  <div style={{ color: 'var(--text-2)', fontSize: '0.7rem', marginBottom: '2px' }}>ELEVACIÓN</div>
-                  <div style={{ fontWeight: 600 }}>{w.elevation_gain_meters > 0 ? `${w.elevation_gain_meters}m` : '—'}</div>
-                </div>
-              </div>
-
-              {/* Power zones mini bars */}
-              {(() => {
-                let zones: any = null
-                try { if (w.time_in_zones_json) zones = JSON.parse(w.time_in_zones_json) } catch {}
-                if (!zones || zones.total === 0) return null
-                const zcolors: Record<string, string> = { z1:'#94a3b8', z2:'#3b82f6', z3:'#22c55e', z4:'#eab308', z5:'#f97316', z6:'#ef4444', z7:'#dc2626' }
-                const znames: Record<string, string> = { z1:'Z1', z2:'Z2', z3:'Z3', z4:'Z4', z5:'Z5', z6:'Z6', z7:'Z7' }
-                return (
-                  <div>
-                    <div style={{ color: 'var(--text-2)', fontSize: '0.7rem', marginBottom: '6px' }}>ZONAS DE POTENCIA</div>
-                    <div style={{ display: 'flex', height: '8px', borderRadius: '4px', overflow: 'hidden', gap: '2px' }}>
-                      {(['z1','z2','z3','z4','z5','z6','z7'] as const).map(z => {
-                        const pct = zones.total > 0 ? (zones[z] / zones.total) * 100 : 0
-                        if (pct < 1) return null
-                        return (
-                          <div key={z} title={`${znames[z]}: ${Math.round(zones[z]/60)}m (${pct.toFixed(0)}%)`}
-                            style={{ width: `${pct}%`, background: zcolors[z], borderRadius: '4px', minWidth: '2px' }} />
-                        )
-                      })}
+                <div style={{ marginTop: '12px', display: 'grid', gap: '12px', padding: '12px', background: 'var(--surface-1)', borderRadius: '8px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '12px' }}>
+                    <div>
+                      <div style={{ color: 'var(--text-2)', fontSize: '0.7rem', marginBottom: '2px' }}>POTENCIA</div>
+                      <div style={{ fontWeight: 600 }}>{w.avg_power > 0 ? `${w.avg_power}W` : '—'}</div>
+                      {w.normalized_power > 0 && <div style={{ fontSize: '0.75rem', color: 'var(--text-2)' }}>NP {w.normalized_power}W</div>}
+                      {w.max_power > 0 && <div style={{ fontSize: '0.75rem', color: 'var(--text-2)' }}>MAX {w.max_power}W</div>}
                     </div>
-                    <div style={{ display: 'flex', gap: '8px', marginTop: '6px', flexWrap: 'wrap' }}>
-                      {(['z1','z2','z3','z4','z5','z6','z7'] as const).map(z => {
-                        const pct = zones.total > 0 ? (zones[z] / zones.total) * 100 : 0
-                        if (pct < 1) return null
-                        return (
-                          <div key={z} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: zcolors[z] }} />
-                            <span style={{ fontSize: '0.7rem', color: 'var(--text-2)' }}>{znames[z]} {pct.toFixed(0)}%</span>
-                          </div>
-                        )
-                      })}
+                    <div>
+                      <div style={{ color: 'var(--text-2)', fontSize: '0.7rem', marginBottom: '2px' }}>FRECUENCIA CARDÍACA</div>
+                      <div style={{ fontWeight: 600 }}>{w.avg_hr > 0 ? `${w.avg_hr} bpm` : '—'}</div>
+                      {w.max_hr > 0 && <div style={{ fontSize: '0.75rem', color: 'var(--text-2)' }}>MAX {w.max_hr} bpm</div>}
+                    </div>
+                    <div>
+                      <div style={{ color: 'var(--text-2)', fontSize: '0.7rem', marginBottom: '2px' }}>INTENSIDAD</div>
+                      <div style={{ fontWeight: 600 }}>{w.intensity_factor > 0 ? `${(w.intensity_factor * 100).toFixed(0)}% IF` : '—'}</div>
+                    </div>
+                    <div>
+                      <div style={{ color: 'var(--text-2)', fontSize: '0.7rem', marginBottom: '2px' }}>ELEVACIÓN</div>
+                      <div style={{ fontWeight: 600 }}>{w.elevation_gain_meters > 0 ? `${w.elevation_gain_meters}m` : '—'}</div>
                     </div>
                   </div>
-                )
-              })()}
 
-              {w.garmin_connect_url && (
-                <div>
-                  <a href={w.garmin_connect_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem', color: 'var(--primary)', textDecoration: 'none' }}>
-                    Ver en Garmin Connect →
-                  </a>
+                  {/* Power zones mini bars */}
+                  {(() => {
+                    let zones: any = null
+                    try { if (w.time_in_zones_json) zones = JSON.parse(w.time_in_zones_json) } catch {}
+                    if (!zones || zones.total === 0) return null
+                    const zcolors: Record<string, string> = { z1:'#94a3b8', z2:'#3b82f6', z3:'#22c55e', z4:'#eab308', z5:'#f97316', z6:'#ef4444', z7:'#dc2626' }
+                    const znames: Record<string, string> = { z1:'Z1', z2:'Z2', z3:'Z3', z4:'Z4', z5:'Z5', z6:'Z6', z7:'Z7' }
+                    return (
+                      <div>
+                        <div style={{ color: 'var(--text-2)', fontSize: '0.7rem', marginBottom: '6px' }}>ZONAS DE POTENCIA</div>
+                        <div style={{ display: 'flex', height: '8px', borderRadius: '4px', overflow: 'hidden', gap: '2px' }}>
+                          {(['z1','z2','z3','z4','z5','z6','z7'] as const).map(z => {
+                            const pct = zones.total > 0 ? (zones[z] / zones.total) * 100 : 0
+                            if (pct < 1) return null
+                            return (
+                              <div key={z} title={`${znames[z]}: ${Math.round(zones[z]/60)}m (${pct.toFixed(0)}%)`}
+                                style={{ width: `${pct}%`, background: zcolors[z], borderRadius: '4px', minWidth: '2px' }} />
+                            )
+                          })}
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', marginTop: '6px', flexWrap: 'wrap' }}>
+                          {(['z1','z2','z3','z4','z5','z6','z7'] as const).map(z => {
+                            const pct = zones.total > 0 ? (zones[z] / zones.total) * 100 : 0
+                            if (pct < 1) return null
+                            return (
+                              <div key={z} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: zcolors[z] }} />
+                                <span style={{ fontSize: '0.7rem', color: 'var(--text-2)' }}>{znames[z]} {pct.toFixed(0)}%</span>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )
+                  })()}
+
+                  {w.garmin_connect_url && (
+                    <div>
+                      <a href={w.garmin_connect_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem', color: 'var(--primary)', textDecoration: 'none' }}>
+                        Ver en Garmin Connect →
+                      </a>
+                    </div>
+                  )}
                 </div>
-              )}
-              </div>
               )}
             </div>
           )
