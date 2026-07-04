@@ -55,7 +55,16 @@ function App() {
   }
 
   if (loading) return <div style={{background:'#1a1a2e',minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontFamily:'system-ui',fontSize:'1.2rem'}}>Loading...</div>
-  if (error) return <div style={{background:'#1a1a2e',minHeight:'100vh',padding:'32px',color:'#fff',fontFamily:'system-ui'}}><div style={{border:'1px solid #e53e3e',borderRadius:'8px',padding:'24px',background:'rgba(229,62,62,0.15)',maxWidth:'600px',margin:'0 auto'}}><h2 style={{color:'#fc8181',margin:'0 0 12px 0'}}>Error de conexión</h2><p style={{color:'#feb2b2',margin:0}}>{error}</p></div></div>
+  if (error) return (
+    <div style={{background:'#1a1a2e',minHeight:'100vh',padding:'32px',color:'#fff',fontFamily:'system-ui'}}>
+      <div style={{border:'3px solid #e53e3e',borderRadius:'12px',padding:'32px',background:'rgba(229,62,62,0.2)',maxWidth:'600px',margin:'0 auto',textAlign:'center'}}>
+        <div style={{fontSize:'48px',marginBottom:'16px'}}>🚨</div>
+        <h2 style={{color:'#fc8181',margin:'0 0 16px 0',fontSize:'1.5rem'}}>Error de conexión</h2>
+        <p style={{color:'#feb2b2',margin:'0 0 24px 0',fontSize:'1rem'}}>{error}</p>
+        <p style={{color:'#999',fontSize:'0.875rem',margin:0}}>Revisá tu conexión e intentá de nuevo.</p>
+      </div>
+    </div>
+  )
 
   const statusColors: Record<string, string> = {
     optimal: 'status-optimal',
