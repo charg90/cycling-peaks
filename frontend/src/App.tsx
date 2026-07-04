@@ -42,7 +42,8 @@ function App() {
         setLoading(false)
       }).catch((err) => {
         console.error('Dashboard load error:', err)
-        setError(err.message || 'Error cargando datos')
+        const msg = err?.message || err?.reason || 'No se pudo conectar al servidor'
+        setError(msg)
         setLoading(false)
       })
     } else if (tab === 'settings' && !athlete) {
