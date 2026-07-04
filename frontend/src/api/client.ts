@@ -1,6 +1,6 @@
 const BASE = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL}/api/v1`
-  : '/api/v1'
+  : '/api/v1' // relative path for same-origin requests
 
 interface Athlete {
   id: string
@@ -13,7 +13,8 @@ interface ApiList<T> {
 }
 
 async function request<T>(path: string): Promise<T> {
-  const res = await fetch(BASE + path)
+  const url = BASE + path + (path.includes('?') ? '&' : '?') + '_t=' + Date.now()
+  const res = await fetch(url)
   if (!res.ok) throw new Error(`${path}: ${res.status}`)
   return res.json()
 }
@@ -25,7 +26,7 @@ export const api = {
   getLoadToday: <T = unknown>() => request<T>('/load/today'),
   getLoadHistory: <T = unknown>(days = 90) => request<T>(`/load/history?days=${days}`),
   getSyncStatus: <T = unknown>() => request<T>('/sync/status'),
-  triggerSync: () => fetch(BASE + '/sync/trigger', { method: 'POST' }),
+  triggerSync: () => fetch(BASE + '/sync/trigger?_t=' + Date.now(), { method: 'POST' }),
   updateFTP: (ftp: number) => fetch(BASE + '/athlete/ftp', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
